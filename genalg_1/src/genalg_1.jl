@@ -3,7 +3,7 @@ module genalg_1
   # num of vars
   const NVAR = 5
 
-  # the type for cromosomes
+  # the type for chromosomes
   mutable struct TCHROM
     arr::Vector{Float64}
     obj::Float64

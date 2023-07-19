@@ -10,7 +10,10 @@ function todev()
     Pkg.activate(".")
 
     pkgs=[
-      "StatsBase", "DataStructures", "Distributions", "CairoMakie",
+      "DelimitedFiles",
+      "Graphs", "Colors",
+      "DataFrames", "StatsBase",
+      "CairoMakie", "GraphMakie",
     ]
 
     Pkg.add.(pkgs)
