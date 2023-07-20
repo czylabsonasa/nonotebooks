@@ -3,6 +3,8 @@ include("todev.jl"); todev()
 using graphcol_1
 
 using Graphs, Colors, DataFrames, StatsBase, CairoMakie, GraphMakie
+using ImageView: imshow
+using Images
 
 
 # read the data
@@ -24,7 +26,12 @@ oriG = graphplot(
 )
 hidedecorations!(scene.axis)
 printstyled("the original graph:\n",color=:blue)
-oriG|>display
+if isdefined(Main,:_JLAB_)
+  oriG|>display # from repl, it overwrites the previous png (display.png)
+else
+  save("oriG.png",oriG)
+  imshow(load("oriG.png"))
+end
 
 
 # as in networkX in Graph.jl there is a "builtin" method 
@@ -55,7 +62,12 @@ colored_G = graphplot(
 )
 hidedecorations!(colored_G.axis)
 printstyled("\nthe colored graph (shell layout):\n",color=:blue)
-colored_G|>display # from repl, it overwrites the previous png (display.png)
+if isdefined(Main,:_JLAB_)
+  colored_G|>display # from repl, it overwrites the previous png (display.png)
+else
+  save("colored_G.png",colored_G)
+  imshow(load("colored_G.png"))
+end
 
 
 # we need maxcolsize rooms

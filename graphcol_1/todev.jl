@@ -14,6 +14,7 @@ function todev()
       "Graphs", "Colors",
       "DataFrames", "StatsBase",
       "CairoMakie", "GraphMakie",
+      "ImageView",
     ]
 
     Pkg.add.(pkgs)

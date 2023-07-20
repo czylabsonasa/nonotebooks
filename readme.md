@@ -5,12 +5,10 @@
   * main.ipynb/main.md are only for see the pictorial results
 * todev -> modify LOAD_PATH + Revise + Pkg related stuff
 * tomdcode -> render the source code into the notebook (Markdown.jl)
-  
+
 
 #### [graphcol_1](graphcol_1)
 * graph coloring basics - a remake of [https://towardsdatascience.com/graph-coloring-with-networkx](https://towardsdatascience.com/graph-coloring-with-networkx-88c45f09b8f4) in julia
-* basic `Graphs.jl`, `GraphMakie.jl` usage
-* graphcol_1_data()
 
 #### [graphcol_2](graphcol_2)
 * `graphcol_bt`: apply a simple backtracking/exhaustive search method for the graph in graphcol_1.
