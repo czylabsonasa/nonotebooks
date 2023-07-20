@@ -1,8 +1,8 @@
 #### project_0
-* back to the good old repl+revise+geany+a little jupyter(lab)
+* back to the good old repl+revise+geany/micro+a little jupyter(lab)
 * workflow:
-  * cd target_dir; start julia; include("todev.jl"); develop src/module or main.jl...
-  * main.ipynb/main.md are only for see the pictorial results
+  * cd target_dir -> start julia -> include("todev.jl") -> develop src/module and/or main.jl <-
+  * main.ipynb/main.md are only for presenting the results
 * todev -> modify LOAD_PATH + Revise + Pkg related stuff
 * tomdcode -> render the source code into the notebook (Markdown.jl)
 
