@@ -10,6 +10,7 @@ module genalg_1
   end
 
   # the function to be minimized
+  #obj(x::Vector{Float64}) = sum(x .^ 2)
   obj(x) = sum(x .^ 2)
   obj!(x::TCHROM) = x.obj = obj(x.arr)
 
