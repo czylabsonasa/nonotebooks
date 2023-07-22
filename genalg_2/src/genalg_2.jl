@@ -23,6 +23,28 @@ module genalg_2
   const _IDLE=nothing
   const _TOL=1e-4
 
+  function mkadjust(T::DataType,LB,UB)
+    if T===Bool
+      x->x
+    else
+      x->min(UB, max(LB, x))
+    end
+  end
+
+  function mkmutate(T::DataType,SIGMA_MUT::Float64,adjust::Function)
+    if T===Bool
+      x->!x
+    else
+      mutdist=Normal(0, SIGMA_MUT)
+      mutstep()=if T<:AbstractFloat
+        rand(mutdist)
+      else
+        round(rand(mutdist), RoundingMode{:FromZero}())
+      end
+      x->adjust(x+mutstep())
+    end
+  end
+
  
   function mkga(
     ;
@@ -54,11 +76,7 @@ module genalg_2
     UB::TVAR=TVAR(UB)
 
     if adjust===nothing 
-      adjust=if TVAR===Bool
-        x::Bool->x
-      else
-        x->min(UB, max(LB, x))
-      end
+      adjust=mkadjust(TVAR,LB,UB)
     end
     
     function adjust!(x) #if adjust is userdefined then this?... (same4mutate)
@@ -66,17 +84,7 @@ module genalg_2
     end
 
     if mutate===nothing
-      mutate=if TVAR===Bool
-        x::Bool->!x
-      else
-        mutdist=Normal(0, SIGMA_MUT)
-        mutstep()=if TVAR<:AbstractFloat
-          rand(mutdist)
-        else
-          round(rand(mutdist), RoundingMode{:FromZero}())
-        end
-        x->adjust(x+mutstep())
-      end
+      mutate=mkmutate(TVAR,SIGMA_MUT,adjust)
     end
     
     function mutate!(x)
