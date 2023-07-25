@@ -110,6 +110,7 @@ module genalg_2
     MAX_STEP::Int=_MAX_STEP,
     IDLE::Union{Int,Nothing}=_IDLE,
     TOL::Float64=_TOL,
+    OBSERVE::Function=(x...)->nothing
   )
     CHROME=_CHROME{TOBJ,TVAR}
     
@@ -166,7 +167,9 @@ module genalg_2
     function mkselect(; mode::Symbol=:default)
       if mode in [:default,:fitprop]
         function(pool,POP,OFF)
-          w = Weights([exp(-BETA*POP[i].obj) for i = 1:POP_SIZE])
+          d=1e-12
+          w = Weights([exp(-BETA*POP[i].obj)+d for i = 1:POP_SIZE]) # the +d is to avoid a full zero `w` (and the error messages...-> _TODO_: computed BETA->sum(obj)? max(obj))
+          @assert sum(w)>0
           idx = sample(1:POP_SIZE, w, OFF_SIZE; replace = true)
           for i = 1:2:OFF_SIZE
             p1, p2 = POP[idx[i]], POP[idx[i+1]]
@@ -204,7 +207,6 @@ module genalg_2
 
 
     function ga()
-      trace = Float32[]
       gbest = choose()
       gbest.obj = INF
 
@@ -229,7 +231,8 @@ module genalg_2
         if lbest.obj < gbest.obj
           gbest = deepcopy(lbest)
         end
-        push!(trace, gbest.obj)
+        
+        OBSERVE(POP,gbest.obj)
 
         push!(tail, gbest.obj)
         if last(tail) + TOL > first(tail)
@@ -238,7 +241,7 @@ module genalg_2
         end
       end # of main loop
       
-      (best=gbest, status=status, trace=trace, parstr=parstr)
+      (best=gbest, status=status, parstr=parstr)
 
     end # of ga()
     ga

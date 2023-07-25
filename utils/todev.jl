@@ -1,6 +1,8 @@
-#if !("src" in LOAD_PATH)
-#  push!(LOAD_PATH,"src")
-#end
+pkgs=[
+  "ImageView", "Images", 
+  "Markdown",
+]
+
 
 printstyled("activate Revise.\n",color=:yellow)
 using Revise
@@ -16,15 +18,15 @@ function todev(atlp=String[])
     end
   end
 
-  if Pkg.project().path != pwd()*"/Project.toml"
+  if !isfile(pwd()*"/Project.toml") || Pkg.project().path != pwd()*"/Project.toml"
     Pkg.activate(".")
+  end
 
-    pkgs=[
-      "StatsBase", "DataStructures", "Distributions", 
-      "CairoMakie", "Images", "ImageView",
-    ]
 
-    ptml=TOML.tryparsefile("Project.toml")
+  known=if !isfile(pwd()*"/Project.toml")
+    []
+  else
+    keys(TOML.parsefile(pwd()*"/Project.toml")Ö
 
     if ptml===nothing
       Pkg.add.(pkgs)
